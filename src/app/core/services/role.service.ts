@@ -65,9 +65,17 @@ export class RoleService {
 
   deleteRole(id: string): boolean {
     const roles = this.getRoles();
-    const filteredRoles = roles.filter(
-      (role) => role.id !== id && !role.isDefault
-    );
+    const roleToDelete = roles.find((role) => role.id === id);
+
+    // Prevent deleting default roles
+    if (roleToDelete?.isDefault) {
+      alert("Cannot delete default role");
+      return false;
+    }
+
+    // Only remove the specific role, don't check isDefault in filter
+    const filteredRoles = roles.filter((role) => role.id !== id);
+
     if (filteredRoles.length === roles.length) return false;
 
     this.saveRoles(filteredRoles);

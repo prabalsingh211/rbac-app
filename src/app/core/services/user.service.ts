@@ -65,12 +65,20 @@ export class UserService {
 
   deleteUser(id: string): boolean {
     const users = this.getUsers();
-    const filteredUsers = users.filter(
-      (user) => user.id !== id && user.username !== "admin"
-    );
+    const userToDelete = users.find((user) => user.id === id);
+
+    // Prevent deleting admin user
+    if (userToDelete?.username === "admin") {
+      alert("Cannot delete admin user");
+      return false;
+    }
+
+    // Only remove the specific user, don't check username in filter
+    const filteredUsers = users.filter((user) => user.id !== id);
+
     if (filteredUsers.length === users.length) return false;
 
-    this.saveUsers(filteredUsers.map((u) => ({ ...u, role: undefined }))); // Remove role before saving
+    this.saveUsers(filteredUsers.map((u) => ({ ...u, role: undefined })));
     return true;
   }
 

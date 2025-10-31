@@ -33,15 +33,21 @@ export class RoleListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.loadRoles();
+        this.loadRoles(); // Refresh the list
       }
     });
   }
 
   deleteRole(role: Role): void {
     if (confirm(`Are you sure you want to delete role ${role.name}?`)) {
-      this.roleService.deleteRole(role.id);
-      this.loadRoles();
+      const success = this.roleService.deleteRole(role.id);
+      if (success) {
+        this.loadRoles();
+      } else {
+        alert(
+          "Failed to delete role. It might be a default role or already deleted."
+        );
+      }
     }
   }
 }

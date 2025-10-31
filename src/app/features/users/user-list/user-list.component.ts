@@ -47,8 +47,14 @@ export class UserListComponent implements OnInit {
 
   deleteUser(user: User): void {
     if (confirm(`Are you sure you want to delete user ${user.username}?`)) {
-      this.userService.deleteUser(user.id);
-      this.loadUsers();
+      const success = this.userService.deleteUser(user.id);
+      if (success) {
+        this.loadUsers();
+      } else {
+        alert(
+          "Failed to delete user. It might be the admin user or already deleted."
+        );
+      }
     }
   }
 }
