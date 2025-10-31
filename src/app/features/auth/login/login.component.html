@@ -1,47 +1,88 @@
 <div class="login-container">
-  <mat-card class="login-card">
-    <mat-card-header>
-      <mat-card-title>RBAC System Login</mat-card-title>
-    </mat-card-header>
+  <div class="card login-card shadow-lg border-0">
+    <div class="card-header bg-primary text-white text-center py-4">
+      <h3 class="card-title mb-0">
+        <i class="bi bi-shield-lock me-2"></i>RBAC System Login
+      </h3>
+    </div>
 
-    <mat-card-content>
+    <div class="card-body p-4">
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <mat-form-field class="full-width">
-          <mat-label>Username</mat-label>
-          <input matInput formControlName="username" required />
-          <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
+        <!-- Username Field -->
+        <div class="mb-3">
+          <label for="username" class="form-label fw-medium">Username</label>
+          <input
+            type="text"
+            id="username"
+            class="form-control form-control-lg"
+            formControlName="username"
+            placeholder="Enter your username"
+            [class.is-invalid]="
+              loginForm.get('username')?.invalid &&
+              loginForm.get('username')?.touched
+            "
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="loginForm.get('username')?.hasError('required')"
+          >
             Username is required
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <mat-label>Password</mat-label>
-          <input matInput type="password" formControlName="password" required />
-          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-            Password is required
-          </mat-error>
-        </mat-form-field>
-
-        <div *ngIf="errorMessage" class="error-message">
-          {{ errorMessage }}
+          </div>
         </div>
 
+        <!-- Password Field -->
+        <div class="mb-4">
+          <label for="password" class="form-label fw-medium">Password</label>
+          <input
+            type="password"
+            id="password"
+            class="form-control form-control-lg"
+            formControlName="password"
+            placeholder="Enter your password"
+            [class.is-invalid]="
+              loginForm.get('password')?.invalid &&
+              loginForm.get('password')?.touched
+            "
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="loginForm.get('password')?.hasError('required')"
+          >
+            Password is required
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="alert alert-danger text-center py-2">
+          <i class="bi bi-exclamation-triangle me-2"></i>{{ errorMessage }}
+        </div>
+
+        <!-- Login Button -->
         <button
-          mat-raised-button
-          color="primary"
           type="submit"
-          class="full-width"
+          class="btn btn-primary btn-lg w-100 py-2 fw-medium"
           [disabled]="!loginForm.valid"
         >
-          Login
+          <i class="bi bi-box-arrow-in-right me-2"></i>Login
         </button>
       </form>
 
-      <div class="demo-credentials mt-20">
-        <h4>Demo Credentials:</h4>
-        <p><strong>Username:</strong> admin</p>
-        <p><strong>Password:</strong> admin123</p>
+      <!-- Demo Credentials -->
+      <div class="demo-credentials mt-4 p-3 bg-light rounded">
+        <h6 class="fw-bold text-center mb-3">
+          <i class="bi bi-info-circle me-2"></i>Demo Credentials
+        </h6>
+        <div class="row text-center">
+          <div class="col-6">
+            <small class="text-muted d-block">Username</small>
+            <strong>admin</strong>
+          </div>
+          <div class="col-6">
+            <small class="text-muted d-block">Password</small>
+            <strong>admin123</strong>
+          </div>
+        </div>
       </div>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
 </div>

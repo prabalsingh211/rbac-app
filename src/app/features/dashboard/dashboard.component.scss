@@ -1,7 +1,51 @@
 .dashboard-container {
-  padding: 20px;
+  padding: 1rem;
 }
 
-.permissions-list {
-  margin-top: 20px;
+.card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.card-header {
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  h3 {
+    font-weight: 600;
+  }
+}
+
+.user-info {
+  background-color: #e3f2fd;
+  border-left: 4px solid #2196f3;
+  border-radius: 8px;
+  .text-dark {
+    font-weight: 500;
+  }
+}
+
+.permissions-section {
+  .badge {
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 0.5rem;
+  }
+  .card-body {
+    padding: 1.5rem !important;
+  }
+  .badge {
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem !important;
+  }
 }

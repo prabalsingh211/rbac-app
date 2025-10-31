@@ -42,7 +42,10 @@ export class RoleFormComponent implements OnInit {
   isPermissionSelected(permission: string): boolean {
     return this.selectedPermissions.has(permission);
   }
-
+  onCheckboxChange(permission: string, event: Event): void {
+    const isChecked = (event.target as HTMLInputElement)?.checked;
+    this.onPermissionChange(permission, isChecked);
+  }
   onPermissionChange(permission: string, isChecked: boolean): void {
     if (isChecked) {
       this.selectedPermissions.add(permission);

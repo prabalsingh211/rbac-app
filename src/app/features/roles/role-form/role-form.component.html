@@ -1,56 +1,151 @@
 <div class="role-form-container">
-  <h2>{{ data.role ? "Edit" : "Add" }} Role</h2>
+  <div class="card border-0 shadow-sm">
+    <div class="card-header bg-primary text-white py-3">
+      <h4 class="card-title mb-0">
+        <i class="bi bi-person-badge-plus me-2" *ngIf="!data.role"></i>
+        <i class="bi bi-person-badge me-2" *ngIf="data.role"></i>
+        {{ data.role ? "Edit" : "Add" }} Role
+      </h4>
+    </div>
 
-  <form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
-    <mat-form-field class="full-width">
-      <mat-label>Role Name</mat-label>
-      <input matInput formControlName="name" required />
-      <mat-error *ngIf="roleForm.get('name')?.hasError('required')">
-        Role name is required
-      </mat-error>
-    </mat-form-field>
-
-    <div class="permissions-section">
-      <h3>Permissions</h3>
-
-      <div class="permission-category">
-        <h4>Pages</h4>
-        <div *ngFor="let permission of pagePermissions" class="permission-item">
-          <mat-checkbox
-            [checked]="isPermissionSelected(permission.id)"
-            (change)="onPermissionChange(permission.id, $event.checked)"
+    <div class="card-body">
+      <form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
+        <!-- Role Name Field -->
+        <div class="mb-4">
+          <label for="roleName" class="form-label fw-medium">Role Name</label>
+          <input
+            type="text"
+            id="roleName"
+            class="form-control"
+            formControlName="name"
+            placeholder="Enter role name"
+            [class.is-invalid]="
+              roleForm.get('name')?.invalid && roleForm.get('name')?.touched
+            "
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="roleForm.get('name')?.hasError('required')"
           >
-            {{ permission.name }}
-          </mat-checkbox>
+            Role name is required
+          </div>
         </div>
-      </div>
 
-      <div class="permission-category">
-        <h4>Features</h4>
+        <!-- Permissions Section -->
+        <div class="permissions-section">
+          <h5 class="fw-bold text-primary mb-3">
+            <i class="bi bi-shield-check me-2"></i>Permissions
+          </h5>
+
+          <div class="row">
+            <!-- Pages Permissions -->
+            <div class="col-md-6 mb-4">
+              <div class="card h-100 border">
+                <div class="card-header bg-light py-2">
+                  <h6 class="mb-0 text-dark">
+                    <i class="bi bi-file-earmark-text me-2"></i>Pages
+                  </h6>
+                </div>
+                <div class="card-body">
+                  <div class="list-group list-group-flush">
+                    <div
+                      *ngFor="let permission of pagePermissions"
+                      class="list-group-item border-0 px-0 py-2"
+                    >
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          [id]="'page-' + permission.id"
+                          [checked]="isPermissionSelected(permission.id)"
+                          (change)="onCheckboxChange(permission.id, $event)"
+                        />
+                        <label
+                          class="form-check-label fw-medium"
+                          [for]="'page-' + permission.id"
+                        >
+                          {{ permission.name }}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Features Permissions -->
+            <div class="col-md-6 mb-4">
+              <div class="card h-100 border">
+                <div class="card-header bg-light py-2">
+                  <h6 class="mb-0 text-dark">
+                    <i class="bi bi-gear me-2"></i>Features
+                  </h6>
+                </div>
+                <div class="card-body">
+                  <div class="list-group list-group-flush">
+                    <div
+                      *ngFor="let permission of featurePermissions"
+                      class="list-group-item border-0 px-0 py-2"
+                    >
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          [id]="'feature-' + permission.id"
+                          [checked]="isPermissionSelected(permission.id)"
+                          (change)="onCheckboxChange(permission.id, $event)"
+                        />
+                        <label
+                          class="form-check-label fw-medium"
+                          [for]="'feature-' + permission.id"
+                        >
+                          {{ permission.name }}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Selected Permissions Summary -->
         <div
-          *ngFor="let permission of featurePermissions"
-          class="permission-item"
+          *ngIf="selectedPermissions.size > 0"
+          class="alert alert-info border-0"
         >
-          <mat-checkbox
-            [checked]="isPermissionSelected(permission.id)"
-            (change)="onPermissionChange(permission.id, $event.checked)"
-          >
-            {{ permission.name }}
-          </mat-checkbox>
+          <div class="d-flex align-items-center">
+            <i class="bi bi-info-circle me-2"></i>
+            <span>
+              <strong>{{ selectedPermissions.size }}</strong> permission{{
+                selectedPermissions.size > 1 ? "s" : ""
+              }}
+              selected
+            </span>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div class="form-actions">
-      <button mat-button type="button" (click)="onCancel()">Cancel</button>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="!roleForm.valid"
-      >
-        {{ data.role ? "Update" : "Create" }}
-      </button>
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="onCancel()"
+          >
+            <i class="bi bi-x-circle me-1"></i>Cancel
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="!roleForm.valid || selectedPermissions.size === 0"
+          >
+            <i class="bi bi-check-circle me-1" *ngIf="!data.role"></i>
+            <i class="bi bi-pencil-square me-1" *ngIf="data.role"></i>
+            {{ data.role ? "Update" : "Create" }}
+          </button>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>

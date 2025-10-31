@@ -1,44 +1,80 @@
 <div *ngIf="isAuthenticated; else loginTemplate">
-  <mat-toolbar color="primary">
-    <span>RBAC System</span>
-    <span class="flex-spacer"></span>
-    <span
-      >Welcome, {{ currentUser?.username }} ({{
-        currentUser?.role?.name
-      }})</span
-    >
-    <button mat-button (click)="logout()">Logout</button>
-  </mat-toolbar>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="#">
+        <i class="bi bi-shield-lock me-2"></i>RBAC System
+      </a>
 
-  <mat-nav-list>
-    <a
-      mat-list-item
-      *appHasPermission="'dashboard'"
-      routerLink="/dashboard"
-      routerLinkActive="active"
-    >
-      Dashboard
-    </a>
-    <a
-      mat-list-item
-      *appHasPermission="'users'"
-      routerLink="/users"
-      routerLinkActive="active"
-    >
-      Users
-    </a>
-    <a
-      mat-list-item
-      *appHasPermission="'roles'"
-      routerLink="/roles"
-      routerLinkActive="active"
-    >
-      Roles
-    </a>
-  </mat-nav-list>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-  <div class="main-content">
-    <router-outlet></router-outlet>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <span class="navbar-text text-light me-3">
+              <i class="bi bi-person-circle me-1"></i>
+              Welcome, {{ currentUser?.username }} ({{
+                currentUser?.role?.name
+              }})
+            </span>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-outline-light btn-sm" (click)="logout()">
+              <i class="bi bi-box-arrow-right me-1"></i>Logout
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-lg-2 col-md-3 col-12 bg-light border-end min-vh-100 p-0">
+        <div class="list-group list-group-flush rounded-0">
+          <a
+            *appHasPermission="'dashboard'"
+            routerLink="/dashboard"
+            routerLinkActive="active"
+            class="list-group-item list-group-item-action border-0 py-3"
+          >
+            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+          </a>
+          <a
+            *appHasPermission="'users'"
+            routerLink="/users"
+            routerLinkActive="active"
+            class="list-group-item list-group-item-action border-0 py-3"
+          >
+            <i class="bi bi-people me-2"></i>Users
+          </a>
+          <a
+            *appHasPermission="'roles'"
+            routerLink="/roles"
+            routerLinkActive="active"
+            class="list-group-item list-group-item-action border-0 py-3"
+          >
+            <i class="bi bi-person-badge me-2"></i>Roles
+          </a>
+        </div>
+      </div>
+
+      <!-- Page Content -->
+      <div class="col-lg-10 col-md-9 col-12">
+        <div class="container-fluid py-4">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
