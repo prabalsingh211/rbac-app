@@ -1,0 +1,23 @@
+<div class="dashboard-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Dashboard</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Welcome to the RBAC System Dashboard!</p>
+      <p *ngIf="currentUser">
+        Logged in as: <strong>{{ currentUser.username }}</strong> (Role:
+        <strong>{{ currentUser.role?.name }}</strong
+        >)
+      </p>
+      <div class="permissions-list" *ngIf="currentUser?.role">
+        <h4>Your Permissions:</h4>
+        <mat-chip-set>
+          <mat-chip *ngFor="let permission of currentUser.role.permissions">
+            {{ permission }}
+          </mat-chip>
+        </mat-chip-set>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

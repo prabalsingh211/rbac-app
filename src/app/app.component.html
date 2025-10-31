@@ -1,0 +1,47 @@
+<div *ngIf="isAuthenticated; else loginTemplate">
+  <mat-toolbar color="primary">
+    <span>RBAC System</span>
+    <span class="flex-spacer"></span>
+    <span
+      >Welcome, {{ currentUser?.username }} ({{
+        currentUser?.role?.name
+      }})</span
+    >
+    <button mat-button (click)="logout()">Logout</button>
+  </mat-toolbar>
+
+  <mat-nav-list>
+    <a
+      mat-list-item
+      *appHasPermission="'dashboard'"
+      routerLink="/dashboard"
+      routerLinkActive="active"
+    >
+      Dashboard
+    </a>
+    <a
+      mat-list-item
+      *appHasPermission="'users'"
+      routerLink="/users"
+      routerLinkActive="active"
+    >
+      Users
+    </a>
+    <a
+      mat-list-item
+      *appHasPermission="'roles'"
+      routerLink="/roles"
+      routerLinkActive="active"
+    >
+      Roles
+    </a>
+  </mat-nav-list>
+
+  <div class="main-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<ng-template #loginTemplate>
+  <router-outlet></router-outlet>
+</ng-template>

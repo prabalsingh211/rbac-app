@@ -1,0 +1,24 @@
+.role-form-container {
+  padding: 20px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.permissions-section {
+  margin: 20px 0;
+}
+
+.permission-category {
+  margin-bottom: 20px;
+}
+
+.permission-item {
+  margin: 5px 0;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
